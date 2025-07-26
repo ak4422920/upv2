@@ -23,11 +23,9 @@ bot = Client("ZoroverseXBypassBot", api_id=API_ID, api_hash=API_HASH, bot_token=
 @bot.on_message(filters.command("start") & filters.private)
 async def start(client: Client, message: Message):
     await message.reply_text(
-        f"👋 Hello {message.from_user.first_name}!
-"
-        f"I'm ZoroverseX Advanced Uploader Bot with 🔓Bypass support.
-"
-        f"Send me any direct or shortened movie links. I’ll do the rest!",
+        f"👋 Hello {message.from_user.first_name}!\n"
+        "I'm ZoroverseX Advanced Uploader Bot with 🔓Bypass support.\n"
+        "Send me any direct or shortened movie links. I’ll do the rest!",
         quote=True
     )
 
@@ -67,12 +65,21 @@ async def upload(client, message, filename, msg):
     await msg.edit("⬆️ Uploading to Telegram...")
     try:
         if is_video_file(filename):
-            await client.send_video(message.chat.id, filename, caption="🎥 Uploaded by @ZoroverseBot", supports_streaming=True)
+            await client.send_video(
+                message.chat.id, filename,
+                caption="🎥 Uploaded by @ZoroverseBot", supports_streaming=True
+            )
         else:
-            await client.send_document(message.chat.id, filename, caption="📁 Uploaded by @ZoroverseBot")
+            await client.send_document(
+                message.chat.id, filename,
+                caption="📁 Uploaded by @ZoroverseBot"
+            )
         os.remove(filename)
         if LOG_CHANNEL:
-            await client.send_message(LOG_CHANNEL, f"✅ Uploaded: {filename} by {message.from_user.mention}")
+            await client.send_message(
+                LOG_CHANNEL,
+                f"✅ Uploaded: {filename} by {message.from_user.mention}"
+            )
         await msg.delete()
     except Exception as e:
         logger.error(e)
